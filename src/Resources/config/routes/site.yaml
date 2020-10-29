@@ -1,3 +1,0 @@
-index:
-  path: /main
-  controller: 'MartenaSoft\Site\Controller\SiteController::index'
