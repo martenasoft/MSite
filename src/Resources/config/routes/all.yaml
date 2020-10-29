@@ -1,0 +1,2 @@
+site:
+  resource: '@MartenaSoftSiteBundle/Resources/config/routes/site.yaml'
