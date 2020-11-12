@@ -1,3 +1,8 @@
 index:
-  path: /main
+  path: /main/{path}
+  requirements:
+    path: '^([a-z-0-9\.\-\/]+)$'
+
   controller: 'MartenaSoft\Site\Controller\SiteController::index'
+
+
