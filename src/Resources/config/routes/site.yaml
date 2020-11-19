@@ -4,5 +4,3 @@ index:
     path: '^([a-z-0-9\.\-\/]+)$'
 
   controller: 'MartenaSoft\Site\Controller\SiteController::index'
-
-
