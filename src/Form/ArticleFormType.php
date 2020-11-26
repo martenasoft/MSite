@@ -7,6 +7,8 @@ use MartenaSoft\Menu\Form\Type\MenuDropdownType;
 use MartenaSoft\Site\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleFormType extends AbstractType
@@ -20,6 +22,7 @@ class ArticleFormType extends AbstractType
             ->add('preview')
             ->add('detail')
             ->add('menu', MenuDropdownType::class)
+
             ;
     }
 

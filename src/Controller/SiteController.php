@@ -3,6 +3,8 @@
 namespace MartenaSoft\Site\Controller;
 
 use MartenaSoft\Common\Entity\PageDataInterface;
+use MartenaSoft\Common\Event\LoadConfigEvent;
+use MartenaSoft\Common\EventSubscriber\CommonSubscriber;
 use MartenaSoft\Common\Library\CommonValues;
 use MartenaSoft\Content\Controller\AbstractContentController;
 use MartenaSoft\Content\Controller\CommonEntityInterface;
@@ -12,6 +14,8 @@ use MartenaSoft\Menu\Entity\MenuInterface;
 use MartenaSoft\Menu\Repository\MenuRepository;
 use MartenaSoft\Site\Entity\SiteConfig;
 use MartenaSoft\Site\Repository\SiteConfigRepository;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SiteController extends AbstractContentController
@@ -23,10 +27,16 @@ class SiteController extends AbstractContentController
     public function __construct(
         ParserUrlService $parserUrlService,
         MenuRepository $menuRepository,
-        SiteConfigRepository $configRepository
+        SiteConfigRepository $configRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct($parserUrlService, $menuRepository);
         $this->configRepository = $configRepository;
+
+        $eventDispatcher->dispatch(
+            new LoadConfigEvent(SiteConfig::class),
+            LoadConfigEvent::getEventName()
+        );
     }
 
     public function index(): Response
