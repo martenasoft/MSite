@@ -1,6 +1,9 @@
-index:
-  path: /main/{path}
+site_index:
+  path: /
+  controller: 'MartenaSoft\Site\Controller\SiteController::index'
+
+site_page:
+  path: /article/{path}
   requirements:
     path: '^([a-z-0-9\.\-\/]+)$'
-
-  controller: 'MartenaSoft\Site\Controller\SiteController::index'
+  controller: 'MartenaSoft\Site\Controller\SiteController::page'

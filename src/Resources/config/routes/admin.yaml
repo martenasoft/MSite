@@ -1,0 +1,19 @@
+admin_article_config:
+  path: /site/config
+  controller: 'MartenaSoft\Site\Controller\SiteAdminConfigController::index'
+
+admin_article_index:
+  path: /article
+  controller: 'MartenaSoft\Site\Controller\ArticleAdminController::index'
+
+admin_article_create:
+  path: /article/create
+  controller: 'MartenaSoft\Site\Controller\ArticleAdminController::save'
+
+admin_article_edit:
+  path: /article/edit/{id}
+  controller: 'MartenaSoft\Site\Controller\ArticleAdminController::save'
+
+admin_article_delete:
+  path: /article/delete/{id}
+  controller: 'MartenaSoft\Site\Controller\ArticleAdminController::delete'

@@ -1,2 +1,6 @@
+site_admin:
+  prefix: /admin
+  resource: '@MartenaSoftSiteBundle/Resources/config/routes/admin.yaml'
+
 site:
   resource: '@MartenaSoftSiteBundle/Resources/config/routes/site.yaml'
