@@ -2,6 +2,8 @@
 
 namespace MartenaSoft\Site\DependencyInjection;
 
+use Doctrine\ORM\EntityManagerInterface;
+use MartenaSoft\Site\MartenaSoftSiteBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Config\FileLocator;
@@ -13,6 +15,8 @@ class MartenaSoftSiteExtension extends Extension
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(MartenaSoftSiteBundle::getConfigName(), $config);
 
         $loader = new YamlFileLoader(
             $container,

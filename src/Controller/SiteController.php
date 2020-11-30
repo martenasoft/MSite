@@ -4,34 +4,36 @@ namespace MartenaSoft\Site\Controller;
 
 use MartenaSoft\Common\Entity\PageDataInterface;
 use MartenaSoft\Common\Event\LoadConfigEvent;
-use MartenaSoft\Common\EventSubscriber\CommonSubscriber;
-use MartenaSoft\Common\Library\CommonValues;
+use MartenaSoft\Common\Service\ConfigService\CommonConfigServiceInterface;
 use MartenaSoft\Content\Controller\AbstractContentController;
 use MartenaSoft\Content\Controller\CommonEntityInterface;
-use MartenaSoft\Content\Controller\ConfigInterface;
+
+use MartenaSoft\Content\Entity\ConfigInterface;
 use MartenaSoft\Content\Service\ParserUrlService;
 use MartenaSoft\Menu\Entity\MenuInterface;
 use MartenaSoft\Menu\Repository\MenuRepository;
 use MartenaSoft\Site\Entity\SiteConfig;
+use MartenaSoft\Site\MartenaSoftSiteBundle;
 use MartenaSoft\Site\Repository\SiteConfigRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SiteController extends AbstractContentController
 {
     public const ROOT_NODE_NAME = 'article';
-    private ConfigInterface $defaultConfig;
     private SiteConfigRepository $configRepository;
+    private CommonConfigServiceInterface $commonConfigService;
 
     public function __construct(
         ParserUrlService $parserUrlService,
         MenuRepository $menuRepository,
         SiteConfigRepository $configRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        CommonConfigServiceInterface $commonConfigService
     ) {
         parent::__construct($parserUrlService, $menuRepository);
         $this->configRepository = $configRepository;
+        $this->commonConfigService = $commonConfigService;
 
         $eventDispatcher->dispatch(
             new LoadConfigEvent(SiteConfig::class),
@@ -62,16 +64,7 @@ class SiteController extends AbstractContentController
 
     protected function getConfig(string $url): ?ConfigInterface
     {
-        $result = null;
-        $result = $this->configRepository->findOneByName($url);
-        if (empty($result)) {
-            $result = $this->configRepository->findOneByName(CommonValues::DEFAULT_DATA_NAME);
-        }
-
-        if (empty($result)) {
-            $result = new SiteConfig();
-        }
-
-        return $result;
+        $configData = $this->commonConfigService->get(MartenaSoftSiteBundle::getConfigName());
+        return $this->commonConfigService->array2ConfigEntity($configData, new SiteConfig());
     }
 }

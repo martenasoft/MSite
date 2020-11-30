@@ -3,7 +3,9 @@
 namespace MartenaSoft\Site\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use MartenaSoft\Common\Entity\CommonEntityConfigInterface;
 use MartenaSoft\Common\Library\CommonStatusInterface;
+use MartenaSoft\Content\Entity\ConfigInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MartenaSoft\Site\Repository\SiteConfigRepository;
@@ -14,7 +16,7 @@ use MartenaSoft\Site\Repository\SiteConfigRepository;
  *     fields={"name", "domain", "url"}
  * )
  */
-class SiteConfig implements CommonStatusInterface
+class SiteConfig implements CommonStatusInterface, CommonEntityConfigInterface, ConfigInterface
 {
     /**
      * @ORM\Id
@@ -25,29 +27,29 @@ class SiteConfig implements CommonStatusInterface
 
     /**
      * @Assert\NotBlank()
-     * @@ORM\Column()
+     * @ORM\Column()
      */
     private ?string $name;
 
     /**
      * @Assert\NotBlank()
-     * @@ORM\Column()
+     * @ORM\Column()
      */
     private ?string $domain;
 
     /**
      * @Assert\NotBlank()
-     * @@ORM\Column()
+     * @ORM\Column()
      */
     private ?string $url;
 
     /**
      * @Assert\NotBlank()
-     * @@ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint")
      */
     private int $status = CommonStatusInterface::STATUS_ACTIVE;
     
-    /** @@ORM\Column()  */
+    /** @ORM\Column()  */
     private ?string $redirectTo;
 
     public function getId(): ?int
@@ -108,5 +110,10 @@ class SiteConfig implements CommonStatusInterface
     {
         $this->redirectTo = $redirectTo;
         return $this;
+    }
+
+    public function getDefaultName(): string
+    {
+        return CommonEntityConfigInterface::DEFAULT_NAME;
     }
 }
