@@ -21,7 +21,9 @@ class ArticleFormType extends AbstractType
             ->add('dateTime')
             ->add('preview')
             ->add('detail')
-            ->add('menu', MenuDropdownType::class)
+            ->add('menu', MenuDropdownType::class, [
+                'required' => false
+            ])
 
             ;
     }

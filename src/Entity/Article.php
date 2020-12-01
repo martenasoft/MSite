@@ -51,10 +51,11 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
     private ?MenuInterface $menu;
 
     /** @ORM\Column(type="boolean") */
-    private ?bool $isDeleted;
+    private ?bool $isDeleted = false;
 
     public function __construct()
     {
+        $this->setMenu(null);
         $this->setDateTime(new \DateTime('now'));
     }
 
@@ -139,6 +140,6 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
     public function setIsDeleted(?bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+        return $this;
     }
-
 }
