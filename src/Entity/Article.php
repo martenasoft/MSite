@@ -8,6 +8,7 @@ use MartenaSoft\Common\Library\CommonStatusInterface;
 use MartenaSoft\Menu\Entity\BaseMenuInterface;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Entity\MenuInterface;
+use MartenaSoft\Trash\Entity\TrashEntityInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use MartenaSoft\Site\Repository\ArticleRepository;
@@ -19,7 +20,7 @@ use MartenaSoft\Site\Repository\ArticleRepository;
  * )
  */
 
-class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityInterface
+class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityInterface, TrashEntityInterface
 {
     /**
      * @ORM\Id
@@ -48,6 +49,9 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
 
     /** @ORM\ManyToOne(targetEntity="MartenaSoft\Menu\Entity\Menu") */
     private ?MenuInterface $menu;
+
+    /** @ORM\Column(type="boolean") */
+    private ?bool $isDeleted;
 
     public function __construct()
     {
@@ -126,4 +130,15 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
         $this->menu = $menu;
         return $this;
     }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(?bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+    }
+
 }

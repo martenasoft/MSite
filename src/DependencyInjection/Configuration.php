@@ -17,20 +17,7 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('some_value')->defaultValue('some value 11')->end()
             ->scalarNode(CommonConfigService::ENTITY_CONFIG_NAME)->end()
-
             ->end();
-
-        /*$treeBuilder->getRootNode()
-            ->children()
-            ->arrayNode('twitter')
-            ->children()
-            ->integerNode('client_id')->end()
-            ->scalarNode('client_secret')->end()
-            ->end()
-            ->end() // twitter
-            ->end()
-        ;*/
-
 
         return $treeBuilder;
     }

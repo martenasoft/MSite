@@ -3,7 +3,7 @@
 namespace MartenaSoft\Site\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
-use MartenaSoft\Common\Controller\AbstractAdminCommonInitController;
+use MartenaSoft\Crud\Controller\AbstractCrudController;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Event\SaveMenuEvent;
 use MartenaSoft\Menu\Event\SaveMenuEventInterface;
@@ -11,7 +11,7 @@ use MartenaSoft\Menu\Service\SaveMenuItemServiceInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ArticleAdminController extends AbstractAdminCommonInitController
+class ArticleAdminController extends AbstractCrudController
 {
     private SaveMenuItemServiceInterface $saveMenuItemService;
 
