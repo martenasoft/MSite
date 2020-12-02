@@ -4,6 +4,8 @@ namespace MartenaSoft\Site\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use MartenaSoft\Common\Event\CommonFormBeforeSaveEvent;
+use MartenaSoft\Common\Event\CommonFormShowEvent;
+use MartenaSoft\Common\Library\CommonValues;
 use MartenaSoft\Crud\Controller\AbstractCrudController;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Event\SaveMenuEvent;
@@ -22,26 +24,39 @@ class ArticleAdminController extends AbstractCrudController
         EventDispatcherInterface $eventDispatcher,
         SaveMenuItemServiceInterface $saveMenuItemService
     ) {
-        parent::__construct($entityManager, $logger, $eventDispatcher);
         $this->saveMenuItemService  = $saveMenuItemService;
+        parent::__construct($entityManager, $logger, $eventDispatcher);
     }
 
     protected function initListener(): void
     {
-        $this
+
+        $this->saveMenuItemService->initSaveMenuListener('menu_id');
+
+
+
+        /*$this
             ->getEventDispatcher()
             ->addListener(CommonFormBeforeSaveEvent::getEventName(), function (CommonFormBeforeSaveEvent $event) {
                 $formData = $event->getForm()->getData();
                 $menuData = $formData->getMenu();
                 $menu = null;
+
                 if ($formData->getId() === null) {
                     $menu = new Menu();
                     $menu->setName($formData->getName());
                 } else {
-
+                    $menu = $menuData;
                 }
-                $this->saveMenuItemService->save($menuData, $menu);
-            });
+                try {
+                    $this->saveMenuItemService->save($menu, $menuData);
+                } catch (\Throwable $exception) {
+                    throw $exception;
+                    dump($exception->getMessage()); die;
+                }
+
+
+            });*/
     }
 
     protected function getH1(): string
