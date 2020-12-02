@@ -3,6 +3,7 @@
 namespace MartenaSoft\Site\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use MartenaSoft\Common\Event\CommonFormBeforeSaveEvent;
 use MartenaSoft\Crud\Controller\AbstractCrudController;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Event\SaveMenuEvent;
@@ -29,17 +30,17 @@ class ArticleAdminController extends AbstractCrudController
     {
         $this
             ->getEventDispatcher()
-            ->addListener(SaveMenuEvent::getEventName(), function (SaveMenuEventInterface $event) {
-
-                $menu = $this->saveMenuItemService->getMenuByName($event->getEntity()->getName());
-                if ($event->getEntity()->getId() === null || $menu === null) {
+            ->addListener(CommonFormBeforeSaveEvent::getEventName(), function (CommonFormBeforeSaveEvent $event) {
+                $formData = $event->getForm()->getData();
+                $menuData = $formData->getMenu();
+                $menu = null;
+                if ($formData->getId() === null) {
                     $menu = new Menu();
-                    $menu->setName($event->getEntity()->getName());
-                   // $menuRepository = $this->get(SaveMenuItemServiceInterface::class);
+                    $menu->setName($formData->getName());
                 } else {
 
                 }
-                $this->saveMenuItemService->save($menu, $event->getMenu());
+                $this->saveMenuItemService->save($menuData, $menu);
             });
     }
 
