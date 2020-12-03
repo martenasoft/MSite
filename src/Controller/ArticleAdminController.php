@@ -7,6 +7,7 @@ use MartenaSoft\Common\Event\CommonFormBeforeSaveEvent;
 use MartenaSoft\Common\Event\CommonFormShowEvent;
 use MartenaSoft\Common\Library\CommonValues;
 use MartenaSoft\Crud\Controller\AbstractCrudController;
+use MartenaSoft\Crud\Event\CrudBeforeSaveEvent;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Event\SaveMenuEvent;
 use MartenaSoft\Menu\Event\SaveMenuEventInterface;
@@ -30,7 +31,7 @@ class ArticleAdminController extends AbstractCrudController
 
     protected function initListener(): void
     {
-        $this->saveMenuItemService->initSaveMenuListener('menu_id');
+        $this->saveMenuItemService->initSaveMenuListener('menu_id', CrudBeforeSaveEvent::getEventName());
     }
 
     protected function getH1(): string
