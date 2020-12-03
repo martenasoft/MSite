@@ -30,33 +30,7 @@ class ArticleAdminController extends AbstractCrudController
 
     protected function initListener(): void
     {
-
         $this->saveMenuItemService->initSaveMenuListener('menu_id');
-
-
-
-        /*$this
-            ->getEventDispatcher()
-            ->addListener(CommonFormBeforeSaveEvent::getEventName(), function (CommonFormBeforeSaveEvent $event) {
-                $formData = $event->getForm()->getData();
-                $menuData = $formData->getMenu();
-                $menu = null;
-
-                if ($formData->getId() === null) {
-                    $menu = new Menu();
-                    $menu->setName($formData->getName());
-                } else {
-                    $menu = $menuData;
-                }
-                try {
-                    $this->saveMenuItemService->save($menu, $menuData);
-                } catch (\Throwable $exception) {
-                    throw $exception;
-                    dump($exception->getMessage()); die;
-                }
-
-
-            });*/
     }
 
     protected function getH1(): string
