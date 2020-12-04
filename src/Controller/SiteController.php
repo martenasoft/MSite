@@ -14,6 +14,7 @@ use MartenaSoft\Menu\Entity\MenuInterface;
 use MartenaSoft\Menu\Repository\MenuRepository;
 use MartenaSoft\Site\Entity\SiteConfig;
 use MartenaSoft\Site\MartenaSoftSiteBundle;
+use MartenaSoft\Site\Repository\ArticleRepository;
 use MartenaSoft\Site\Repository\SiteConfigRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,13 +24,15 @@ class SiteController extends AbstractContentController
     public const ROOT_NODE_NAME = 'article';
     private SiteConfigRepository $configRepository;
     private CommonConfigServiceInterface $commonConfigService;
+    private ArticleRepository $articleRepository;
 
     public function __construct(
         ParserUrlService $parserUrlService,
         MenuRepository $menuRepository,
         SiteConfigRepository $configRepository,
         EventDispatcherInterface $eventDispatcher,
-        CommonConfigServiceInterface $commonConfigService
+        CommonConfigServiceInterface $commonConfigService,
+        ArticleRepository $articleRepository
     ) {
         parent::__construct($parserUrlService, $menuRepository);
         $this->configRepository = $configRepository;
@@ -39,11 +42,32 @@ class SiteController extends AbstractContentController
             new LoadConfigEvent(SiteConfig::class),
             LoadConfigEvent::getEventName()
         );
+
+        $this->articleRepository = $articleRepository;
     }
 
     public function index(): Response
     {
         return $this->render('@MartenaSoftSite/site/index.html.twig');
+    }
+
+    public function previewInMain(): Response
+    {
+        $queryBuilder = $this
+            ->articleRepository
+            ->getItemQueryBuilder()
+            ->setFirstResult(0)
+            ->setMaxResults(10)
+        ;
+
+        $queryBuilder
+            ->andWhere(ArticleRepository::getAlias().".dateTime<=:now")
+            ->setParameter("now", new \DateTime('now'))
+        ;
+
+        return $this->render('@MartenaSoftSite/article/preview_in_main.html.twig', [
+            'items' => $queryBuilder->getQuery()->getResult()
+        ]);
     }
 
     protected function getResponse(PageDataInterface $pageData): Response

@@ -1,0 +1,16 @@
+{% if items is not empty %}
+    {% for item in items %}
+        <p>
+        <div class="card">
+            <div class="card-header">
+                <a href="#">{{ item.name }}</a>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ item.preview }}</p>
+{{ item.menu | mUrl }}
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        </p>
+    {% endfor %}
+{% endif %}

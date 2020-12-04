@@ -4,16 +4,12 @@ namespace MartenaSoft\Site\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use MartenaSoft\Common\Event\CommonFormBeforeSaveEvent;
-use MartenaSoft\Common\Event\CommonFormShowEvent;
-use MartenaSoft\Common\Library\CommonValues;
 use MartenaSoft\Crud\Controller\AbstractCrudController;
 use MartenaSoft\Crud\Event\CrudBeforeSaveEvent;
-use MartenaSoft\Menu\Entity\Menu;
-use MartenaSoft\Menu\Event\SaveMenuEvent;
-use MartenaSoft\Menu\Event\SaveMenuEventInterface;
 use MartenaSoft\Menu\Service\SaveMenuItemServiceInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class ArticleAdminController extends AbstractCrudController
 {
