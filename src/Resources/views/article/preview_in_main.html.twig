@@ -1,15 +1,21 @@
 {% if items is not empty %}
     {% for item in items %}
+        {% set url = item.menu  %}
         <p>
-        <div class="card">
-            <div class="card-header">
-                <a href="#">{{ item.name }}</a>
-            </div>
-            <div class="card-body">
-                <p class="card-text">{{ item.preview }}</p>
-{{ item.menu | mUrl }}
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
+            <div class="card">
+                <div class="card-header">
+                    {% if url is not empty %}
+                        <a href="{{ url }}">{{ item.name }}</a>
+                    {% else %}
+                        {{ item.name }}
+                    {% endif %}
+                </div>
+                <div class="card-body">
+        <p class="card-text">{{ item.preview }}</p>
+        {% if url is not empty %}
+            <a href="{{ url }}" class="btn btn-primary">Read more</a>
+        {% endif %}
+        </div>
         </div>
         </p>
     {% endfor %}

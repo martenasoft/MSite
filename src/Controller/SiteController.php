@@ -9,6 +9,7 @@ use MartenaSoft\Content\Controller\AbstractContentController;
 use MartenaSoft\Content\Controller\CommonEntityInterface;
 
 use MartenaSoft\Content\Entity\ConfigInterface;
+use MartenaSoft\Content\Exception\ParseUrlErrorException;
 use MartenaSoft\Content\Service\ParserUrlService;
 use MartenaSoft\Menu\Entity\MenuInterface;
 use MartenaSoft\Menu\Repository\MenuRepository;
@@ -17,11 +18,12 @@ use MartenaSoft\Site\MartenaSoftSiteBundle;
 use MartenaSoft\Site\Repository\ArticleRepository;
 use MartenaSoft\Site\Repository\SiteConfigRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SiteController extends AbstractContentController
 {
-    public const ROOT_NODE_NAME = 'article';
+    public const ROOT_NODE_NAME = 'Article';
     private SiteConfigRepository $configRepository;
     private CommonConfigServiceInterface $commonConfigService;
     private ArticleRepository $articleRepository;
@@ -51,6 +53,17 @@ class SiteController extends AbstractContentController
         return $this->render('@MartenaSoftSite/site/index.html.twig');
     }
 
+   /* public function page(Request $request, string $path): Response
+    {
+        try {
+            $response = parent::page($request, $path);
+        } catch (ParseUrlErrorException $exception) {
+
+          //  dump($exception); die;
+        }
+        return $response;
+    }*/
+
     public function previewInMain(): Response
     {
         $queryBuilder = $this
@@ -79,11 +92,12 @@ class SiteController extends AbstractContentController
 
     protected function getRootMenuEntity(): ?MenuInterface
     {
-        return $this
+        $result = $this
              ->menuRepository
              ->findOneByNameQueryBuilder(self::ROOT_NODE_NAME)
              ->getQuery()
              ->getOneOrNullResult();
+        return $result;
     }
 
     protected function getConfig(string $url): ?ConfigInterface
