@@ -29,10 +29,16 @@ class ArticleFormType extends AbstractType
             ->add('dateTime')
             ->add('preview')
             ->add('detail')
-            ->add('menu', MenuDropdownType::class, [
-                'required' => false
-            ])->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                $this->menuItemService->selectParentItemDropDown($event);
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $data = $event->getData();
+                $form = $event->getForm();
+
+                if (empty($data->getId())) {
+                    $form->add('menu', MenuDropdownType::class, [
+                        'required' => false
+                    ]);
+                    $this->menuItemService->selectParentItemDropDown($event);
+                }
             });
     }
 

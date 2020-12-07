@@ -1,0 +1,16 @@
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    {% if form.vars.data.menu is not empty %}
+        <div class="form-group">
+            <a href="{{ path('menu_admin_edit', {id:form.vars.data.menu.id}) }}" target="_blank">
+                Edit menu ({{ form.vars.data.menu.name }})
+            </a>
+        </div>
+
+    {% endif %}
+    {% set cancel_url = path('menu_admin_index') %}
+    {% include '@MartenaSoftCommon/common/form_bottom.html.twig' %}
+    {{ form_end(form) }}
+{% endblock %}
