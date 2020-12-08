@@ -1,5 +1,10 @@
 {% extends '@MartenaSoftContent/content/page.html.twig' %}
 
 {% block body %}
-sds
+
+    {{ render(controller('MartenaSoft\\Site\\Controller\\SiteController::previewInMain', {
+        items: subItems
+    })) }}
+
+
 {% endblock %}

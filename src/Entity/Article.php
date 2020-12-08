@@ -8,6 +8,7 @@ use MartenaSoft\Common\Library\CommonStatusInterface;
 use MartenaSoft\Menu\Entity\BaseMenuInterface;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Entity\MenuInterface;
+use MartenaSoft\Seo\Entity\SeoInterface;
 use MartenaSoft\Trash\Entity\TrashEntityInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -49,6 +50,10 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
 
     /** @ORM\ManyToOne(targetEntity="MartenaSoft\Menu\Entity\Menu") */
     private ?MenuInterface $menu;
+
+    /** @ORM\ManyToOne(targetEntity="MartenaSoft\Seo\Entity\Seo") */
+    private ?SeoInterface $seo;
+
 
     /** @ORM\Column(type="boolean") */
     private ?bool $isDeleted = false;
@@ -140,6 +145,17 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
     public function setIsDeleted(?bool $isDeleted): self
     {
         $this->isDeleted = $isDeleted;
+        return $this;
+    }
+
+    public function getSeo(): ?SeoInterface
+    {
+        return $this->seo;
+    }
+
+    public function setSeo(?SeoInterface $seo): self
+    {
+        $this->seo = $seo;
         return $this;
     }
 }

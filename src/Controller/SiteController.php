@@ -2,6 +2,7 @@
 
 namespace MartenaSoft\Site\Controller;
 
+use Doctrine\ORM\QueryBuilder;
 use MartenaSoft\Common\Entity\PageDataInterface;
 use MartenaSoft\Common\Event\LoadConfigEvent;
 use MartenaSoft\Common\Service\ConfigService\CommonConfigServiceInterface;
@@ -13,6 +14,7 @@ use MartenaSoft\Content\Exception\ParseUrlErrorException;
 use MartenaSoft\Content\Service\ParserUrlService;
 use MartenaSoft\Menu\Entity\MenuInterface;
 use MartenaSoft\Menu\Repository\MenuRepository;
+use MartenaSoft\Seo\Repository\SeoRepository;
 use MartenaSoft\Site\Entity\SiteConfig;
 use MartenaSoft\Site\MartenaSoftSiteBundle;
 use MartenaSoft\Site\Repository\ArticleRepository;
@@ -53,50 +55,65 @@ class SiteController extends AbstractContentController
         return $this->render('@MartenaSoftSite/site/index.html.twig');
     }
 
-   /* public function page(Request $request, string $path): Response
-    {
-        try {
-            $response = parent::page($request, $path);
-        } catch (ParseUrlErrorException $exception) {
+    /* public function page(Request $request, string $path): Response
+     {
+         try {
+             $response = parent::page($request, $path);
+         } catch (ParseUrlErrorException $exception) {
 
-          //  dump($exception); die;
+           //  dump($exception); die;
+         }
+         return $response;
+     }*/
+
+    public function previewInMain(?array $items = null): Response
+    {
+        if ($items === null) {
+            $queryBuilder = $this
+                ->articleRepository
+                ->getItemQueryBuilder()
+                ->setFirstResult(0)
+                ->setMaxResults(10);
+
+            $queryBuilder
+                ->andWhere(ArticleRepository::getAlias() . ".dateTime<=:now")
+                ->setParameter("now", new \DateTime('now'));
+
+            $items = $queryBuilder->getQuery()->getResult();
         }
-        return $response;
-    }*/
 
-    public function previewInMain(): Response
-    {
-        $queryBuilder = $this
-            ->articleRepository
-            ->getItemQueryBuilder()
-            ->setFirstResult(0)
-            ->setMaxResults(10)
-        ;
-
-        $queryBuilder
-            ->andWhere(ArticleRepository::getAlias().".dateTime<=:now")
-            ->setParameter("now", new \DateTime('now'))
-        ;
 
         return $this->render('@MartenaSoftSite/article/preview_in_main.html.twig', [
-            'items' => $queryBuilder->getQuery()->getResult()
+            'items' => $items
         ]);
+    }
+
+    protected function getFindUrlQueryBuilder(): ?QueryBuilder
+    {
+        return $this->articleRepository->getPageQueryBuilder();
     }
 
     protected function getResponse(PageDataInterface $pageData): Response
     {
+        $menu = $pageData->getActiveData()->getMenu();
+
+        $subSectionsQueryBuilder = $this
+            ->articleRepository
+            ->getSubSectionsItemsQueryBuilder($menu);
+
         return $this->render('@MartenaSoftSite/site/page.html.twig', [
-            'pageData' => $pageData
+            'pageData' => $pageData,
+            'subItems' => $subSectionsQueryBuilder->getQuery()->getResult()
         ]);
     }
 
     protected function getRootMenuEntity(): ?MenuInterface
     {
         $result = $this
-             ->menuRepository
-             ->findOneByNameQueryBuilder(self::ROOT_NODE_NAME)
-             ->getQuery()
-             ->getOneOrNullResult();
+            ->menuRepository
+            ->findOneByNameQueryBuilder(self::ROOT_NODE_NAME)
+            ->getQuery()
+            ->getOneOrNullResult();
         return $result;
     }
 
