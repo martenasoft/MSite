@@ -1,10 +1,13 @@
 {% extends '@MartenaSoftContent/content/page.html.twig' %}
 
-{% block body %}
+{% block seo %} {{ render(controller('MartenaSoft\\Seo\\Controller\\SeoController::tags', {
+        seo: pageData.activeData.seo
+    }))}}{% endblock %}
 
+{% block h1 %} {{ pageData.activeData.seo is not empty ? pageData.activeData.seo.h1 }} {% endblock %}
+
+{% block body %}
     {{ render(controller('MartenaSoft\\Site\\Controller\\SiteController::previewInMain', {
         items: subItems
     })) }}
-
-
 {% endblock %}

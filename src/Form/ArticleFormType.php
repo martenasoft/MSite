@@ -5,6 +5,7 @@ namespace MartenaSoft\Site\Form;
 use MartenaSoft\Common\Form\Type\StatusDropdownType;
 use MartenaSoft\Menu\Form\Type\MenuDropdownType;
 use MartenaSoft\Menu\Service\SaveMenuItemService;
+use MartenaSoft\Seo\Form\SeoSmallFormType;
 use MartenaSoft\Site\Entity\Article;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,6 +30,9 @@ class ArticleFormType extends AbstractType
             ->add('dateTime')
             ->add('preview')
             ->add('detail')
+            ->add('seo', SeoSmallFormType::class, [
+                'label' =>false
+            ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();
                 $form = $event->getForm();

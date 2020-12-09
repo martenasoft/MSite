@@ -33,6 +33,9 @@ class ArticleAdminController extends AbstractCrudController
                 CrudBeforeSaveEvent::getEventName(), function (CommonEventInterface $event) {
 
                 $formData = $event->getForm()->getData();
+                $name = $formData->getName();
+                $event->getEntity()->getSeo()->setName($formData->getName());
+
                 if (!empty($formData->getId())) {
                     return;
                 }

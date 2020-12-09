@@ -8,6 +8,7 @@ use MartenaSoft\Common\Library\CommonStatusInterface;
 use MartenaSoft\Menu\Entity\BaseMenuInterface;
 use MartenaSoft\Menu\Entity\Menu;
 use MartenaSoft\Menu\Entity\MenuInterface;
+use MartenaSoft\Seo\Entity\Seo;
 use MartenaSoft\Seo\Entity\SeoInterface;
 use MartenaSoft\Trash\Entity\TrashEntityInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -51,7 +52,7 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
     /** @ORM\ManyToOne(targetEntity="MartenaSoft\Menu\Entity\Menu") */
     private ?MenuInterface $menu;
 
-    /** @ORM\ManyToOne(targetEntity="MartenaSoft\Seo\Entity\Seo") */
+    /** @ORM\ManyToOne(targetEntity="MartenaSoft\Seo\Entity\Seo", cascade={"persist", "remove"}) */
     private ?SeoInterface $seo;
 
 
@@ -62,6 +63,8 @@ class Article implements CommonStatusInterface, BaseMenuInterface, CommonEntityI
     {
         $this->setMenu(null);
         $this->setDateTime(new \DateTime('now'));
+        $seo = new Seo();
+        $this->setSeo($seo);
     }
 
     public function getId(): ?int

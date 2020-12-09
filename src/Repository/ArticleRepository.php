@@ -30,7 +30,9 @@ class ArticleRepository extends AbstractContentRepository
         return $this
             ->getQueryBuilder()
             ->innerJoin(ArticleRepository::getAlias() . '.menu', MenuRepository::getAlias())
+            ->addSelect(MenuRepository::getAlias())
             ->leftJoin(ArticleRepository::getAlias() . '.seo', SeoRepository::getAlias())
+            ->addSelect(SeoRepository::getAlias())
             ;
     }
 

@@ -1,15 +1,31 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_errors(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.status) }}
+    {{ form_row(form.dateTime) }}
+    {{ form_row(form.preview) }}
+    {{ form_row(form.detail) }}
+
+    <hr>
     {% if form.vars.data.menu is not empty %}
         <div class="form-group">
             <a href="{{ path('menu_admin_edit', {id:form.vars.data.menu.id}) }}" target="_blank">
                 Edit menu ({{ form.vars.data.menu.name }})
             </a>
         </div>
-
+    {% else %}
+        {{ form_row(form.menu) }}
     {% endif %}
+    <hr>
+    <h4>
+        Seo
+    {% if form.vars.data.seo is not empty %}
+        (<a href="#">for advanced</a>)
+    {% endif %}
+    </h4>
+    {{ form_row(form.seo) }}
+
     {% set cancel_url = path('menu_admin_index') %}
     {% include '@MartenaSoftCommon/common/form_bottom.html.twig' %}
     {{ form_end(form) }}
