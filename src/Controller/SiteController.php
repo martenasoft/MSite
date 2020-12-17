@@ -55,17 +55,6 @@ class SiteController extends AbstractContentController
         return $this->render('@MartenaSoftSite/site/index.html.twig');
     }
 
-    /* public function page(Request $request, string $path): Response
-     {
-         try {
-             $response = parent::page($request, $path);
-         } catch (ParseUrlErrorException $exception) {
-
-           //  dump($exception); die;
-         }
-         return $response;
-     }*/
-
     public function previewInMain(?array $items = null): Response
     {
         if ($items === null) {
@@ -100,6 +89,7 @@ class SiteController extends AbstractContentController
         $subSectionsQueryBuilder = $this
             ->articleRepository
             ->getSubSectionsItemsQueryBuilder($menu);
+
 
         return $this->render('@MartenaSoftSite/site/page.html.twig', [
             'pageData' => $pageData,

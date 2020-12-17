@@ -10,4 +10,11 @@
     {{ render(controller('MartenaSoft\\Site\\Controller\\SiteController::previewInMain', {
         items: subItems
     })) }}
+
+    {% if pageData.activeData.preview is not empty %}
+        {{ pageData.activeData.preview }}
+        <hr>
+    {% endif %}
+    {{ pageData.activeData.detail }}
+
 {% endblock %}
