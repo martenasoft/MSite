@@ -18,6 +18,16 @@
         {{ form_row(form.menu) }}
     {% endif %}
     <hr>
+    <h4>Images</h4>
+    {% if form.images is defined %}
+
+        {{ form_row(form.images) }}
+    {% else %}
+        <div class="alert alert-warning">
+            <p>To upload images <a href="{{ path('admin_mediaconfig_create', {name:'article'}) }}" target="_blank">save configurations</a></p>
+        </div>
+    {% endif %}
+    <hr>
     <h4>
         Seo
     {% if form.vars.data.seo is not empty %}
