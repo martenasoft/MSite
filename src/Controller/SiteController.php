@@ -66,7 +66,8 @@ class SiteController extends AbstractContentController
 
             $queryBuilder
                 ->andWhere(ArticleRepository::getAlias() . ".dateTime<=:now")
-                ->setParameter("now", new \DateTime('now'));
+                ->setParameter("now", new \DateTime('now'))
+            ;
 
             $items = $queryBuilder->getQuery()->getResult();
         }

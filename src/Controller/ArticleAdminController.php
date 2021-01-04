@@ -53,6 +53,14 @@ class ArticleAdminController extends AbstractCrudController
                 $menu->setName($formData->getName());
                 $menu->setUrl($formData->getName());
 
+                $mediaConfig = $this->mediaConfigRepository->getByName('article');
+                try {
+                    $fileName = $this->uploadImageService->upload($formData->get('images')->getData(), $mediaConfig);
+
+                } catch (\Throwable $exception) {
+                    throw $exception;
+                }
+
                 try {
                     $this->menuRepository->save($menu, $menuData);
                     $event->getForm()->getData()->setMenu($menu);
@@ -61,14 +69,7 @@ class ArticleAdminController extends AbstractCrudController
                 }
             });
 
-        $this->getEventDispatcher()
-            ->addListener(CrudAfterSaveEvent::getEventName(), function(CommonEventInterface $event) {
-                $entity = $event->getEntity();
-                $form = $event->getForm();
 
-                $mediaConfig = $this->mediaConfigRepository->getByName('article');
-                $this->uploadImageService->upload($form->get('images')->getData(), $mediaConfig);
-            });
     }
 
 
